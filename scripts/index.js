@@ -6,7 +6,9 @@ const newCard = (content, deleteCallback) => {
   // клонируем содержимое тега template
   const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
   // наполняем содержимым
-  cardElement.querySelector('.card__image').src = content.link;
+  const cardImage = cardElement.querySelector('.card__image');
+  cardImage.src = content.link;
+  cardImage.alt = `Высококачественная фотография изображающая ${content.name}`;
   cardElement.querySelector('.card__title').textContent = content.name;
   cardElement.querySelector('.card__delete-button').addEventListener(
     'click', () => {deleteCallback(cardElement)}
