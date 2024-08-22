@@ -15,7 +15,7 @@ const popupCardNew = document.querySelector('.popup_type_new-card');
 const popupImage = document.querySelector('.popup_type_image');
 const popupImageSrc = popupImage.querySelector('.popup__image');
 const popupImageCaption = popupImage.querySelector('.popup__caption');
-let currentPopup;  // текущее открытое модальное окно
+//let currentPopup;  // текущее открытое модальное окно
 
 // Формы
 const formProfileEdit = popupProfileEdit.querySelector('.popup__form');
@@ -29,12 +29,20 @@ const inputCardUrl = formCardNew.querySelector('.popup__input_type_url');
 const profileName = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description');
 
+// Функция вывода модального окна с картинкой
+const enlargeCard = (event) => {
+  popupImageSrc.src = event.target.src;
+  popupImageSrc.alt = event.target.alt;
+  popupImageCaption.textContent = event.target.alt;
+  openModal(popupImage);
+};
+
 // Обработчики форм
 const handleFormProfileEdit = event => {
   event.preventDefault();
   profileName.textContent = inputProfileName.value;
   profileDescription.textContent = inputProfileDescription.value;
-  closeModal(currentPopup);
+  closeModal(popupProfileEdit);
 }
 
 const handleFormCardNew = event => {
@@ -42,23 +50,17 @@ const handleFormCardNew = event => {
   let cardItem = {};
   cardItem.name = inputCardName.value;
   cardItem.link = inputCardUrl.value;
-  cardContainer.prepend(newCard(cardItem, deleteCard, likeCard, enlargeCard));
-  closeModal(currentPopup);
+  cardContainer.prepend(newCard(cardItem, cardCallbacks));
+  closeModal(popupCardNew);
   formCardNew.reset();
 }
 
-// Функция вывода модального окна с картинкой
-const enlargeCard = (event) => {
-  popupImageSrc.src = event.target.src;
-  popupImageSrc.alt = event.target.alt;
-  popupImageCaption.textContent = event.target.alt;
-  openModal(popupImage);
-  currentPopup = popupImage;
-};
+// Обработчики для карточки
+const cardCallbacks = {deleteCard, likeCard, enlargeCard};
 
 // Вывод карточек на страницу
 initialCards.forEach((cardItem) => {
-  cardContainer.append(newCard(cardItem, deleteCard, likeCard, enlargeCard));
+  cardContainer.append(newCard(cardItem, cardCallbacks));
 });
 
 // Обработчики событий
@@ -67,19 +69,19 @@ buttonProfileEdit.addEventListener('click', () => {
   inputProfileName.value = profileName.textContent;
   inputProfileDescription.value = profileDescription.textContent;
   openModal(popupProfileEdit);
-  currentPopup = popupProfileEdit;
 });
 
 buttonCardNew.addEventListener('click', () => {
   inputCardName.value = '';
   inputCardUrl.value = '';
   openModal(popupCardNew);
-  currentPopup = popupCardNew;
 });
 
 // Закрытие модальных окон по клику на крестик
 document.querySelectorAll('.popup__close').forEach(button => {
-    button.addEventListener('click', () => closeModal(currentPopup));
+    button.addEventListener('click', event => {
+      closeModal(event.target.closest('.popup'));
+    })
 })
 
 // Закрытие модальных окон по клику на оверлей

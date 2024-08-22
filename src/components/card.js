@@ -1,7 +1,7 @@
 const cardTemplate = document.querySelector('#card-template').content;
 
 // Функция создания карточки
-export const newCard = (content, deleteCallback, likeCallback, modalCallback) => {
+export const newCard = (content, cardCallbacks) => {
   const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
   const cardImage = cardElement.querySelector('.card__image');
   const buttonDelete = cardElement.querySelector('.card__delete-button');
@@ -9,10 +9,10 @@ export const newCard = (content, deleteCallback, likeCallback, modalCallback) =>
 
   cardImage.src = content.link;
   cardImage.alt = content.name;
-  cardImage.addEventListener('click', (evt) => modalCallback(evt));
+  cardImage.addEventListener('click', (evt) => cardCallbacks.enlargeCard(evt));
   cardElement.querySelector('.card__title').textContent = content.name;
-  buttonDelete.addEventListener('click', () => {deleteCallback(cardElement)});
-  buttonLike.addEventListener('click', () => {likeCallback(buttonLike)});
+  buttonDelete.addEventListener('click', () => {cardCallbacks.deleteCard(cardElement)});
+  buttonLike.addEventListener('click', () => {cardCallbacks.likeCard(buttonLike)});
   // возвращаем подготовленный к выводу элемент карточки
   return cardElement;
 }
