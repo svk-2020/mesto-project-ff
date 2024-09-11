@@ -1,7 +1,8 @@
 import '../pages/index.css';
-import {initialCards} from "./cards";
-import {deleteCard, likeCard, newCard} from "./card";
-import {closeModal, closeModalOnOverlay, openModal} from "./modal";
+import {initialCards} from './cards';
+import {deleteCard, likeCard, newCard} from './card';
+import {closeModal, closeModalOnOverlay, openModal} from './modal';
+import {enableValidation, clearValidation} from './validation';
 
 const cardContainer = document.querySelector('.places__list');
 
@@ -15,7 +16,6 @@ const popupCardNew = document.querySelector('.popup_type_new-card');
 const popupImage = document.querySelector('.popup_type_image');
 const popupImageSrc = popupImage.querySelector('.popup__image');
 const popupImageCaption = popupImage.querySelector('.popup__caption');
-//let currentPopup;  // текущее открытое модальное окно
 
 // Формы
 const formProfileEdit = popupProfileEdit.querySelector('.popup__form');
@@ -24,6 +24,16 @@ const inputProfileName = formProfileEdit.querySelector('.popup__input_type_name'
 const inputProfileDescription = formProfileEdit.querySelector('.popup__input_type_description');
 const inputCardName = formCardNew.querySelector('.popup__input_type_card-name');
 const inputCardUrl = formCardNew.querySelector('.popup__input_type_url');
+
+// Валидация формы - классы и селекторы элементов
+const validationSettings = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible',
+};
 
 // Профиль
 const profileName = document.querySelector('.profile__title');
@@ -69,26 +79,30 @@ buttonProfileEdit.addEventListener('click', () => {
   inputProfileName.value = profileName.textContent;
   inputProfileDescription.value = profileDescription.textContent;
   openModal(popupProfileEdit);
+  clearValidation(formProfileEdit, validationSettings);
 });
 
 buttonCardNew.addEventListener('click', () => {
   inputCardName.value = '';
   inputCardUrl.value = '';
   openModal(popupCardNew);
+  clearValidation(formCardNew, validationSettings);
 });
 
 // Закрытие модальных окон по клику на крестик
 document.querySelectorAll('.popup__close').forEach(button => {
+    const popup = button.closest('.popup');
     button.addEventListener('click', event => {
-      closeModal(event.target.closest('.popup'));
+      closeModal(popup);
     })
 })
 
 // Закрытие модальных окон по клику на оверлей
 document.querySelectorAll('.popup').forEach(popup => {
-    popup.addEventListener('click', event => closeModalOnOverlay(event));
+    popup.addEventListener('click', closeModalOnOverlay);
 });
 
-// Заполнение форм
+// Заполнение валидированных форм
+enableValidation(validationSettings);
 formProfileEdit.addEventListener('submit', handleFormProfileEdit);
 formCardNew.addEventListener('submit', handleFormCardNew);

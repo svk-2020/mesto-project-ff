@@ -9,7 +9,7 @@ export const newCard = (content, cardCallbacks) => {
 
   cardImage.src = content.link;
   cardImage.alt = content.name;
-  cardImage.addEventListener('click', (evt) => cardCallbacks.enlargeCard(evt));
+  cardImage.addEventListener('click', cardCallbacks.enlargeCard);
   cardElement.querySelector('.card__title').textContent = content.name;
   buttonDelete.addEventListener('click', () => {cardCallbacks.deleteCard(cardElement)});
   buttonLike.addEventListener('click', () => {cardCallbacks.likeCard(buttonLike)});
