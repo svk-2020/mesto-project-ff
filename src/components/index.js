@@ -3,7 +3,11 @@ import '../pages/index.css';
 import {deleteCard, likeCard, newCard} from './card';
 import {closeModal, closeModalOnOverlay, openModal} from './modal';
 import {enableValidation, clearValidation} from './validation';
-import {getUserProfile, getCards, editUserProfile, editUserAvatar} from './api';
+import {
+  addNewCard,
+  editUserAvatar,editUserProfile,
+  getCards, getUserProfile
+} from './api';
 
 const cardContainer = document.querySelector('.places__list');
 
@@ -74,7 +78,6 @@ const handleFormAvatarEdit = event => {
   event.preventDefault();
   editUserAvatar(inputAvatarUrl.value)
     .then((userProfile) => {
-      console.log('????? - ', userProfile)
       profileImage.style = `background-image: url('${userProfile.avatar}')`;
     })
     .catch((err) => {
@@ -85,10 +88,16 @@ const handleFormAvatarEdit = event => {
 
 const handleFormCardNew = event => {
   event.preventDefault();
-  let cardItem = {};
-  cardItem.name = inputCardName.value;
-  cardItem.link = inputCardUrl.value;
-  cardContainer.prepend(newCard(cardItem, cardCallbacks));
+  addNewCard(inputCardName.value, inputCardUrl.value)
+    .then((cardInfo) => {
+      let cardItem = {};
+      cardItem.name = cardInfo.name;
+      cardItem.link = cardInfo.link;
+      cardContainer.prepend(newCard(cardItem, cardCallbacks));
+    })
+    .catch((err) => {
+      console.log(err);
+    });
   closeModal(popupCardNew);
   formCardNew.reset();
 }

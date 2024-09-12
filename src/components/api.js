@@ -54,3 +54,16 @@ export const editUserAvatar = userAvatar => {
   })
     .then(apiResponse);
 };
+
+// Добавление новой карточки
+export const addNewCard = (cardName, cardLink) => {
+  return fetch(`${apiSettings.baseUrl}/cards`, {
+    method: 'POST',
+    headers: apiSettings.headers,
+    body: JSON.stringify({
+      name: cardName,
+      link: cardLink,
+    })
+  })
+    .then(apiResponse);
+};
