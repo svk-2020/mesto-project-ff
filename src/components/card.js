@@ -6,6 +6,7 @@ export const newCard = (content, cardCallbacks) => {
   const cardImage = cardElement.querySelector('.card__image');
   const buttonDelete = cardElement.querySelector('.card__delete-button');
   const buttonLike = cardElement.querySelector('.card__like-button');
+  const counterLike = cardElement.querySelector('.card__like-counter');
 
   cardImage.src = content.link;
   cardImage.alt = content.name;
@@ -13,6 +14,7 @@ export const newCard = (content, cardCallbacks) => {
   cardElement.querySelector('.card__title').textContent = content.name;
   buttonDelete.addEventListener('click', () => {cardCallbacks.deleteCard(cardElement)});
   buttonLike.addEventListener('click', () => {cardCallbacks.likeCard(buttonLike)});
+  counterLike.textContent = content.likes.length;
   // возвращаем подготовленный к выводу элемент карточки
   return cardElement;
 }

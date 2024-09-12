@@ -93,6 +93,7 @@ const handleFormCardNew = event => {
       let cardItem = {};
       cardItem.name = cardInfo.name;
       cardItem.link = cardInfo.link;
+      cardItem.likes = cardInfo.likes;
       cardContainer.prepend(newCard(cardItem, cardCallbacks));
     })
     .catch((err) => {
