@@ -7,7 +7,7 @@ const apiSettings = {
 };
 
 // Возвращает ответ от API
-const apiResponse = response => {
+const getResponse = response => {
   if (response.ok) {
     return response.json();
   }
@@ -19,7 +19,7 @@ export const getUserProfile = () => {
   return fetch(`${apiSettings.baseUrl}/users/me`, {
     headers: apiSettings.headers,
   })
-    .then(apiResponse);
+    .then(getResponse);
 };
 
 // Получение карточек
@@ -27,7 +27,7 @@ export const getCards = () => {
   return fetch(`${apiSettings.baseUrl}/cards`, {
     headers: apiSettings.headers,
   })
-    .then(apiResponse);
+    .then(getResponse);
 };
 
 // Редактирование профиля пользователя
@@ -40,7 +40,7 @@ export const editUserProfile = (userName, userAbout) => {
       about: userAbout,
     })
   })
-    .then(apiResponse);
+    .then(getResponse);
 };
 
 // Редактирование аватара пользователя
@@ -52,7 +52,7 @@ export const editUserAvatar = userAvatar => {
       avatar: userAvatar,
     })
   })
-    .then(apiResponse);
+    .then(getResponse);
 };
 
 // Добавление новой карточки
@@ -65,7 +65,7 @@ export const addNewCard = (cardName, cardLink) => {
       link: cardLink,
     })
   })
-    .then(apiResponse);
+    .then(getResponse);
 };
 
 // Удаление карточки
@@ -74,7 +74,7 @@ export const deleteCardFromServer = cardId => {
     method: 'DELETE',
     headers: apiSettings.headers,
   })
-    .then(apiResponse);
+    .then(getResponse);
 };
 
 // Постановка лайка
@@ -83,7 +83,7 @@ export const addLike = cardId => {
     method: 'PUT',
     headers: apiSettings.headers,
   })
-    .then(apiResponse);
+    .then(getResponse);
 };
 
 // Снятие лайка
@@ -92,5 +92,5 @@ export const deleteLike = cardId => {
     method: 'DELETE',
     headers: apiSettings.headers,
   })
-    .then(apiResponse);
+    .then(getResponse);
 };

@@ -3,7 +3,7 @@ import {deleteCardFromServer, addLike, deleteLike} from './api';
 const cardTemplate = document.querySelector('#card-template').content;
 
 // Функция создания карточки
-export const newCard = (userId, content, cardCallbacks) => {
+export const createNewCard = (userId, content, cardCallbacks) => {
   const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
   const cardImage = cardElement.querySelector('.card__image');
   const buttonDelete = cardElement.querySelector('.card__delete-button');

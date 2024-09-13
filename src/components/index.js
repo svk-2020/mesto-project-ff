@@ -1,6 +1,6 @@
 import '../pages/index.css';
 // import {initialCards} from './cards';
-import {deleteCard, likeCard, newCard} from './card';
+import {deleteCard, likeCard, createNewCard} from './card';
 import {closeModal, closeModalOnOverlay, openModal} from './modal';
 import {enableValidation, clearValidation} from './validation';
 import {
@@ -66,11 +66,7 @@ const cardCallbacks = {deleteCard, likeCard, enlargeCard};
 
 // функция отображающая процесс сохранения данных на сервере
 const renderLoading = (isLoading, formButton) => {
-  if (isLoading) {
-    formButton.textContent = 'Сохранение...';
-  } else {
-    formButton.textContent = 'Сохранить';
-  }
+  formButton.textContent = isLoading ? 'Сохранение...' : 'Сохранить';
 };
 
 // Обработчики форм
@@ -112,7 +108,7 @@ const handleFormCardNew = event => {
   renderLoading(true, buttonFormCardNew);
   addNewCard(inputCardName.value, inputCardUrl.value)
     .then((cardInfo) => {
-      cardContainer.prepend(newCard(profileId, cardInfo, cardCallbacks));
+      cardContainer.prepend(createNewCard(profileId, cardInfo, cardCallbacks));
     })
     .catch((err) => {
       console.log(err);
@@ -174,7 +170,7 @@ Promise.all([getUserProfile(), getCards()])
     profileId = userProfile._id;
     // Вывод карточек
     cardsArray.forEach((cardItem) => {
-      cardContainer.append(newCard(profileId, cardItem, cardCallbacks));
+      cardContainer.append(createNewCard(profileId, cardItem, cardCallbacks));
     });
   })
   .catch((err) => {
