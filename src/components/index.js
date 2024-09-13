@@ -33,6 +33,9 @@ const inputProfileDescription = formProfileEdit.querySelector('.popup__input_typ
 const inputAvatarUrl = formAvatarEdit.querySelector('.popup__input_type_url');
 const inputCardName = formCardNew.querySelector('.popup__input_type_card-name');
 const inputCardUrl = formCardNew.querySelector('.popup__input_type_url');
+const buttonFormProfileEdit = formProfileEdit.querySelector('.popup__button');
+const buttonFormAvatarEdit = formProfileEdit.querySelector('.popup__button');
+const buttonFormCardNew = formProfileEdit.querySelector('.popup__button');
 
 // Валидация формы - классы и селекторы элементов
 const validationSettings = {
@@ -61,9 +64,19 @@ const enlargeCard = (event) => {
 // Обработчики для карточки
 const cardCallbacks = {deleteCard, likeCard, enlargeCard};
 
+// функция отображающая процесс сохранения данных на сервере
+const renderLoading = (isLoading, formButton) => {
+  if (isLoading) {
+    formButton.textContent = 'Сохранение...';
+  } else {
+    formButton.textContent = 'Сохранить';
+  }
+};
+
 // Обработчики форм
 const handleFormProfileEdit = event => {
   event.preventDefault();
+  renderLoading(true, buttonFormProfileEdit);
   editUserProfile(inputProfileName.value, inputProfileDescription.value)
     .then((userProfile) => {
       profileName.textContent = userProfile.name;
@@ -71,30 +84,41 @@ const handleFormProfileEdit = event => {
     })
     .catch((err) => {
       console.log(err);
+    })
+    .finally(() => {
+      renderLoading(false, buttonFormProfileEdit);
     });
   closeModal(popupProfileEdit);
 }
 
 const handleFormAvatarEdit = event => {
   event.preventDefault();
+  renderLoading(true, buttonFormAvatarEdit);
   editUserAvatar(inputAvatarUrl.value)
     .then((userProfile) => {
       profileImage.style = `background-image: url('${userProfile.avatar}')`;
     })
     .catch((err) => {
       console.log(err);
+    })
+    .finally(() => {
+      renderLoading(false, buttonFormAvatarEdit);
     });
   closeModal(popupAvatarEdit);
 }
 
 const handleFormCardNew = event => {
   event.preventDefault();
+  renderLoading(true, buttonFormCardNew);
   addNewCard(inputCardName.value, inputCardUrl.value)
     .then((cardInfo) => {
       cardContainer.prepend(newCard(profileId, cardInfo, cardCallbacks));
     })
     .catch((err) => {
       console.log(err);
+    })
+    .finally(() => {
+      renderLoading(false, buttonFormCardNew);
     });
   closeModal(popupCardNew);
   formCardNew.reset();
