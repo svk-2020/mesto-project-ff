@@ -48,6 +48,7 @@ const validationSettings = {
 const profileName = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description');
 const profileImage = document.querySelector('.profile__image');
+let profileId = '';
 
 // Функция вывода модального окна с картинкой
 const enlargeCard = (event) => {
@@ -90,11 +91,7 @@ const handleFormCardNew = event => {
   event.preventDefault();
   addNewCard(inputCardName.value, inputCardUrl.value)
     .then((cardInfo) => {
-      let cardItem = {};
-      cardItem.name = cardInfo.name;
-      cardItem.link = cardInfo.link;
-      cardItem.likes = cardInfo.likes;
-      cardContainer.prepend(newCard(cardItem, cardCallbacks));
+      cardContainer.prepend(newCard(profileId, cardInfo, cardCallbacks));
     })
     .catch((err) => {
       console.log(err);
@@ -150,9 +147,10 @@ Promise.all([getUserProfile(), getCards()])
     profileName.textContent = userProfile.name;
     profileDescription.textContent = userProfile.about;
     profileImage.style = `background-image: url('${userProfile.avatar}')`;
+    profileId = userProfile._id;
     // Вывод карточек
     cardsArray.forEach((cardItem) => {
-      cardContainer.append(newCard(cardItem, cardCallbacks));
+      cardContainer.append(newCard(profileId, cardItem, cardCallbacks));
     });
   })
   .catch((err) => {

@@ -67,3 +67,30 @@ export const addNewCard = (cardName, cardLink) => {
   })
     .then(apiResponse);
 };
+
+// Удаление карточки
+export const deleteCardFromServer = cardId => {
+  return fetch(`${apiSettings.baseUrl}/cards/${cardId}`, {
+    method: 'DELETE',
+    headers: apiSettings.headers,
+  })
+    .then(apiResponse);
+};
+
+// Постановка лайка
+export const addLike = cardId => {
+  return fetch(`${apiSettings.baseUrl}/cards/likes/${cardId}`, {
+    method: 'PUT',
+    headers: apiSettings.headers,
+  })
+    .then(apiResponse);
+};
+
+// Снятие лайка
+export const deleteLike = cardId => {
+  return fetch(`${apiSettings.baseUrl}/cards/likes/${cardId}`, {
+    method: 'DELETE',
+    headers: apiSettings.headers,
+  })
+    .then(apiResponse);
+};
