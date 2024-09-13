@@ -14,6 +14,8 @@ HTML, CSS, JavaScript
 ## Ссылка на репозитарий:
 https://github.com/svk-2020/mesto-project-ff.git
 
+## Ссылка на GitHub Pages:
+https://svk-2020.github.io/mesto-project-ff/
 
 ### Автор проекта:
 
